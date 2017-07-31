@@ -27,7 +27,8 @@ open class BadgedBarButtonItem: UIBarButtonItem {
             
             if (badgeLabel.superview != nil) {
                 updateBadgeValue(animated: shouldAnimateBadge)
-            } else {
+            }
+            else {
                 badgeLabel = self.createBadgeLabel()
                 updateBadgeProperties()
                 customView?.addSubview(badgeLabel)
@@ -71,7 +72,11 @@ open class BadgedBarButtonItem: UIBarButtonItem {
      A collection of properties that define the layout and behavior of the badge.
      Accessable after initialization if run-time updates are required.
     */
-    public var badgeProperties: BadgeProperties
+    public var badgeProperties: BadgeProperties {
+        didSet {
+            commonInit()
+        }
+    }
     
     public init(customView: UIView, value: Int, badgeProperties: BadgeProperties = BadgeProperties.default) {
         self.badgeProperties = badgeProperties
@@ -237,6 +242,7 @@ fileprivate extension BadgedBarButtonItem {
         opacityAnimation.isRemovedOnCompletion = true
         opacityAnimation.delegate = self
         badgeLabel.layer.add(opacityAnimation, forKey: "opacity")
+        badgeLabel.removeFromSuperview()
     }
     
     func createBadgeLabel() -> UILabel {
